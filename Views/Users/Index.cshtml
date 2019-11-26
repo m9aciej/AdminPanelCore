@@ -1,0 +1,91 @@
+﻿@model IEnumerable<AdminPanelCore.Models.User>
+
+<!-- My htmlhelper -->
+@using AdminPanelCore.Helpers
+
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h3 class="box-title">@ViewData["Title"]</h3>
+
+<!-- /.box-header -->
+<div class="box-body">
+    <table id="example2" class="table table-bordered table-hover">
+
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Role.RoleName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    Options
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Role.RoleName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+
+                        @if (@Html.CheckPermission("Users.Index.Edit"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a><a> |</a>
+                        }
+                        @if (@Html.CheckPermission("Users.Index.Details"))
+                        {
+                            <a asp-action="Details" asp-route-id="@item.UserId">Details </a><a> |</a>
+                        }
+                        @if (@Html.CheckPermission("Users.Index.Delete"))
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.UserId">Delete</a> <a> |</a>
+                        }
+                        @if (@Html.CheckPermission("Users.Index.Permissions"))
+                        {
+                            <a asp-action="Permissions" asp-route-id="@item.UserId">Permissions</a><a> |</a>
+                        }
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+<p>
+    @if (@Html.CheckPermission("Users.Index.Create"))
+    {
+        <a asp-action="Create">Create New</a>
+    }  
+</p>
+
+<script>
+    $(function () {
+        $('#example2').DataTable({
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'autoWidth': true
+        })
+    })
+</script>

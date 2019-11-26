@@ -1,0 +1,114 @@
+﻿@model IEnumerable<AdminPanelCore.ViewModels.UserRelationViewModel>
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+<div>
+    <label>Master</label>
+    <select class="form-control" asp-items="ViewBag.masterUsers "></select>
+</div>
+<div>
+    <label>Slave</label>
+    <select class="form-control" asp-items="ViewBag.slaveUsers "></select>
+</div>
+
+<br />
+
+<button onclick="Done()" class="btn btn-primary">Add</button>
+
+
+<br />
+<br />
+
+<table id="example2" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RelationsTreeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MasterUserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ChildUserName)
+            </th>
+
+            <th>
+                Delete
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RelationsTreeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MasterUserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ChildUserName)
+                </td>
+                
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.RelationsTreeId">Delete</a><a> |</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+   function Done() {
+        var checkedValues = $('select option:selected').map(function () {
+            return this.value;
+        }).get();
+
+
+        $body = $("body");
+        $(document).on({
+            ajaxStart: function () { $body.addClass("loading"); },
+            ajaxStop: function () { }
+        });
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Create", "Relations")',
+            data: {
+            id: @ViewBag.relationId,
+            checkedValues: checkedValues
+            },
+            error: function (result) {
+            alert("error");
+            },
+            success: function (result) {
+            $body.removeClass("loading");
+            if (result.status == true) {
+            alert("Successfully Updated Relations!")
+            var baseUrl = "/Relations/Edit/@ViewBag.relationId";
+            window.location.href = baseUrl;
+            }
+            else {
+            alert("Relation is exists!")
+            }
+            }
+            });
+            }
+            </script>
+<script>
+    $(function () {
+        $('#example2').DataTable({
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'autoWidth': true
+        })
+    })
+</script>

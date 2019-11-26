@@ -1,0 +1,112 @@
+﻿@model IEnumerable<AdminPanelCore.ViewModels.PermissionViewModel>
+
+@{
+    ViewData["Title"] = "Role permissions";
+}
+
+<h3 class="box-title">@ViewData["Title"]</h3>
+
+<!-- /.box-header -->
+<div class="box-body">
+    <table id="example2" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PermissionId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OptionName)
+                </th>
+                <th>
+                    Options
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PermissionId)
+                </td>
+                <th>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </th>
+                <th>
+                    @Html.DisplayFor(modelItem => item.OptionName)
+                </th>
+                <th>
+                    @if (item.Active)
+                    {
+                        <input type='checkbox' id=@item.PermissionId checked>
+                    }
+                    else
+                    {
+                        <input type='checkbox' id=@item.PermissionId>
+                    }
+                </th>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+
+<div style="margin-left:28px">
+    <button onclick="Done()" class="btn btn-primary">Update</button>
+</div>
+<br />
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script>
+function Done() {
+        var checkedValues = $('input:checkbox:checked').map(function () {
+            return this.id;
+        }).get();
+
+        $body = $("body");
+        $(document).on({
+            ajaxStart: function () { $body.addClass("loading"); },
+            ajaxStop: function () { }
+        });
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Permissions", "Roles")',
+            data: {
+                id: @ViewBag.RoleId,
+                checkedPermission: checkedValues
+            },
+            error: function (result) {
+                alert("error");
+            },
+            success: function (result) {
+                $body.removeClass("loading");
+                if (result.status == true) {
+                    alert("Successfully Updated Role Permissions!")
+                    var baseUrl = "/Roles/Permissions/@ViewBag.RoleId";
+                    window.location.href = baseUrl;
+                }
+                else {
+                    alert("Failed:"+result);
+                }
+            }
+        });
+    }
+
+    $(function () {
+        $('#example2').DataTable({
+            'paging': false,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'autoWidth': true
+        })
+    })
+</script>

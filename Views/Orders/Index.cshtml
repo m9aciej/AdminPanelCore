@@ -1,0 +1,58 @@
+﻿@model IEnumerable<AdminPanelCore.Models.Order>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New Order</a>
+</p>
+
+
+
+<table id="example" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>OrderId</th>
+            <th>OrderInformation</th>
+            <th>UserId</th>
+        </tr>
+    </thead>
+</table>
+
+
+<script>
+
+
+    $(document).ready(function (){
+        var table = $('#example').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ordering": true,
+            "orderMulti": true,
+            ajax: {
+                type: 'POST',
+                url: "@Url.Action("Table", "Orders")",
+            },
+        "columns": [
+            { "data": "orderId" },
+            { "data": "orderInformation" },
+            { "data": "userId" },
+            ],
+        "language": {
+           "processing":  "Processing...",
+        }
+    });
+});
+
+
+
+
+
+</script>
+
+

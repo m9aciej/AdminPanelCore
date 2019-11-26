@@ -1,0 +1,84 @@
+﻿@model AdminPanelCore.ViewModels.DashboardViewModel;
+<!-- Morris chart -->
+<link rel="stylesheet" href="bower_components/morris.js/morris.css">
+
+<section class="content-header">
+    <h1>
+        Dashboard
+        <small>Control panel</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li class="active">Dashboard</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Small boxes (Stat box) -->
+    <div class="row">
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>@Model.UsersCount</h3>
+                    <p>Users count</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-users"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>@Model.RolesCount</h3>
+                    <p>Roles count</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-users"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    @{
+        string url = "http://openweathermap.org/img/wn/" + @ViewBag.dataWeather.Weather[0].Icon + "@2x.png";
+    }
+
+    <div class="row">
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>Weather</h3>
+                    <h4>City : @ViewBag.dataWeather.Name</h4>
+                    <h4>Weather : @ViewBag.dataWeather.Weather[0].Main </h4>
+                    <h4>Temperature : @ViewBag.dataWeather.Main.Temp &degC</h4>
+                    <h4>Pressure : @ViewBag.dataWeather.Main.Pressure hPa</h4>
+                    <h4>Wind : @ViewBag.dataWeather.Wind.Speed m/s</h4>
+                    <h4>
+                        Sunrise :
+                        <script>(document.write(new Date(@ViewBag.dataWeather.Sys.Sunrise*1000).toLocaleTimeString()))</script>
+                    </h4>
+                    <h4>
+                        Sunset :
+                        <script>(document.write(new Date(@ViewBag.dataWeather.Sys.Sunset*1000).toLocaleTimeString()))</script>
+                    </h4>
+                </div>
+                <div class="icon">
+                    <img src="@url ">
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+</section>
+
